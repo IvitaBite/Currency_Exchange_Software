@@ -4,6 +4,7 @@ declare(strict_types=1);
 require 'vendor/autoload.php';
 
 use App\CurrencyAPI;
+use App\IsoCodes;
 use Dotenv\Dotenv;
 
 $dotenv = Dotenv::createImmutable(__DIR__, 'apiKey.env');
@@ -33,15 +34,15 @@ while (empty($baseCurrency) || empty($targetCurrency)) {
     }
 }
 
-
 $currencyAPI = new CurrencyAPI($apiKey);
-
+$isoCode = new IsoCodes();
 
 $exchangeRate = $currencyAPI->getCurrencyExchangeRate($baseCurrency, $targetCurrency, $amount);
 if ($exchangeRate !== null) {
     $convertedAmount = number_format($exchangeRate, 2);
+    $amountFormat = number_format($amount, 2);
 
-    echo "$amount $baseCurrency is equal to $convertedAmount $targetCurrency.\n";
+    echo "$amountFormat {$isoCode->get()[$baseCurrency]} is equal to $convertedAmount {$isoCode->get()[$targetCurrency]}.\n";
 } else {
     echo "Currency not found in exchange rates or failed to fetch exchange rate data.\n";
 }
