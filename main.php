@@ -4,9 +4,12 @@ declare(strict_types=1);
 require 'vendor/autoload.php';
 
 use App\CurrencyAPI;
-use App\Currency;
+use Dotenv\Dotenv;
 
-$apiKey = "fca_live_dmHa7eQd1co2DjrKCo0DRNxrI9lD44iHLAQNppts";
+$dotenv = Dotenv::createImmutable(__DIR__, 'apiKey.env');
+$dotenv->load();
+
+$apiKey = $_ENV['API_KEY'];
 
 $baseCurrency = '';
 $targetCurrency = '';
